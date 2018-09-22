@@ -31,16 +31,42 @@ $(function() {
          * in the allFeeds object and ensures it has a URL defined
          * and that the URL is not empty.
          */
+         it('have URLs', function(){
+           for(x = 0; x < allFeeds.length; x++){
+             expect(allFeeds[x].url).toBeDefined();
+           }
+         });
 
 
         /* TODO: Write a test that loops through each feed
          * in the allFeeds object and ensures it has a name defined
          * and that the name is not empty.
          */
+         it('have names', function(){
+           for(x = 0; x < allFeeds.length; x++){
+             expect(allFeeds[x].name).toBeDefined();
+             expect(allFeeds[x].name).not.toBe("");
+           }
+         });
     });
 
 
     /* TODO: Write a new test suite named "The menu" */
+    describe('The menu', function(){
+      it('is hidden be default',function () {
+        expect(document.getElementsByClassName('menu-hidden')[0]).toBeDefined();
+      });
+      it('is shown when clicked',function () {
+        document.getElementsByClassName('icon-list')[0].click();//this click opens the menu
+        expect(document.getElementsByClassName('menu-hidden')[0]).not.toBeDefined()
+
+      });
+      it('and when clicked again',function () {
+        document.getElementsByClassName('icon-list')[0].click();//this click closes the menu
+        expect(document.getElementsByClassName('menu-hidden')[0]).toBeDefined();
+      })
+
+    });
 
         /* TODO: Write a test that ensures the menu element is
          * hidden by default. You'll have to analyze the HTML and
@@ -55,6 +81,14 @@ $(function() {
           */
 
     /* TODO: Write a new test suite named "Initial Entries" */
+    describe('Intitial Entries',function () {
+      beforeEach(function (done) {
+        loadFeed(0,done);
+      });
+      it('has more entries then 0',function () {
+        expect(document.getElementsByClassName('feed')[0].childElementCount).toBeGreaterThan(0);//checks how many children there are
+      });
+    });
 
         /* TODO: Write a test that ensures when the loadFeed
          * function is called and completes its work, there is at least
@@ -64,7 +98,16 @@ $(function() {
          */
 
     /* TODO: Write a new test suite named "New Feed Selection" */
-
+  describe('New Feed Selection',function () {
+    var feed;
+    beforeEach(function (done) {
+      feed = document.getElementsByClassName('feed')[0].innerHTML ;//Get the feed before it loaded
+      loadFeed(1,done);
+    });
+    it('to be loaded',function () {
+      expect(document.getElementsByClassName('feed')[0].innerHTML ).not.toBe(feed);//Gets the feed after it loaded
+    });
+  });
         /* TODO: Write a test that ensures when a new feed is loaded
          * by the loadFeed function that the content actually changes.
          * Remember, loadFeed() is asynchronous.
